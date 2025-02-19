@@ -1,0 +1,19 @@
+Pour le 21 fevrier
+
+- implementer le système de pouvoirs et de missions 
+- afficher les heros, les pouvoirs et les missions en front  
+
+etapes 
+I.Back
+1) DB et Model
+- créer les tables pouvoirs et missions
+2)Repo 
+-
+3) Services
+-
+4) Controller
+-
+5) Router
+-
+
+II.Front
