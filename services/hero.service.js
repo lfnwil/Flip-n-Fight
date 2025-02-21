@@ -15,11 +15,12 @@ export async function getHeroById(id) {
   return {
     id: hero.id,
     alias: hero.alias,
+    power: hero.power,
     powerDate: hero.powerDate.slice(-4),
   };
 }
 
-export async function createHero({ alias, identity, powerDate }) {
+export async function createHero({ alias, identity, power, powerDate }) {
   if (!alias || alias.length < 3 || !/^[a-zA-Z ]+$/.test(alias)) {
     throw new BadRequestError("Alias non valide (3 caractères min, etc.)");
   }
@@ -28,12 +29,12 @@ export async function createHero({ alias, identity, powerDate }) {
     throw new ConflictError("Le héros existe déjà (alias).");
   }
 
-  const hero = await HeroRepository.createHero({ alias, identity, powerDate });
+  const hero = await HeroRepository.createHero({ alias, identity, power, powerDate });
 
   return hero.dataValues;
 }
 
-export async function updateHero(id, { alias, identity, powerDate }) {
+export async function updateHero(id, { alias, identity, power, powerDate }) {
   if (!alias || alias.length < 3 || !/^[a-zA-Z ]+$/.test(alias)) {
     throw new BadRequestError("Alias non valide (3 caractères min, etc.)");
   }
@@ -49,6 +50,7 @@ export async function updateHero(id, { alias, identity, powerDate }) {
   const hero = await HeroRepository.updateHero(id, {
     alias,
     identity,
+    power,
     powerDate,
   });
 
@@ -70,6 +72,7 @@ export async function getAllHeroes() {
     return {
       id: hero.id,
       alias: hero.alias,
+      power: hero.power,
       powerDate: hero.powerDate.slice(-4),
     };
   });

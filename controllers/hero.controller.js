@@ -21,10 +21,11 @@ export async function getHeroById(req, res, next) {
 
 export async function createHero(req, res, error) {
   try {
-    const { alias, identity, powerDate } = req.body;
+    const { alias, identity, power, powerDate } = req.body;
     const newHero = await HeroService.createHero({
       alias,
       identity,
+      power,
       powerDate,
     });
     res.json(newHero);
@@ -36,10 +37,11 @@ export async function createHero(req, res, error) {
 export async function updateHero(req, res, next) {
   try {
     const id = req.params.id;
-    const { alias, identity, powerDate } = req.body;
+    const { alias, identity, power, powerDate } = req.body;
     const updatedHero = await HeroService.updateHero(id, {
       alias,
       identity,
+      power,
       powerDate,
     });
     res.json(updatedHero);
