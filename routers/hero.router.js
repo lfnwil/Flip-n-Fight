@@ -8,6 +8,8 @@ router.get("/:id", HeroController.getHeroById);
 router.post("/", HeroController.createHero);
 router.put("/:id", HeroController.updateHero);
 router.delete("/:id", HeroController.deleteHero);
+router.post("/:heroId/assign-mission/:missionId", HeroController.assignMissionToHero);
+router.delete("/:heroId/remove-mission/:missionId", HeroController.removeMissionFromHero);
 
 router.patch("/:id/restore", HeroController.restoreHero)
 

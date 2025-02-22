@@ -95,3 +95,43 @@ export async function restoreHero(id) {
 
   return restoredHero;
 }
+
+export async function assignMissionToHero(heroId, missionId) {
+  const hero = await HeroRepository.getHeroById(heroId);
+  const mission = await MissionRepository.getMissionById(missionId);
+
+  if (!hero) {
+    throw new NotFoundError("Le héros n'existe pas.");
+  }
+
+  if (!mission) {
+    throw new NotFoundError("La mission n'existe pas.");
+  }
+
+  return await HeroRepository.assignMissionToHero(heroId, missionId);
+}
+
+export async function removeMissionFromHero(heroId, missionId) {
+  const hero = await HeroRepository.getHeroById(heroId);
+  const mission = await MissionRepository.getMissionById(missionId);
+
+  if (!hero) {
+    throw new NotFoundError("Le héros n'existe pas.");
+  }
+
+  if (!mission) {
+    throw new NotFoundError("La mission n'existe pas.");
+  }
+
+  return await HeroRepository.removeMissionFromHero(heroId, missionId);
+}
+
+export async function getMissionsByHero(heroId) {
+  const hero = await HeroRepository.getHeroById(heroId);
+
+  if (!hero) {
+    throw new NotFoundError("Le héros n'existe pas.");
+  }
+
+  return await HeroRepository.getMissionsByHero(heroId);
+}

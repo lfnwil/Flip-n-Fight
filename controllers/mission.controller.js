@@ -59,9 +59,19 @@ export async function deleteMission(req, res, next) {
 export async function restoreMission(req, res, next) {
   try {
     const id = req.params.id;
-    const restoredMission = await MissionService.restoreHero(id);
+    const restoredMission = await MissionService.restoreMission(id);
     res.json(restoredMission);
   } catch (error) {
     next(error)
+  }
+}
+
+export async function getHeroesByMission(req, res, next) {
+  try {
+    const { missionId } = req.params;
+    const heroes = await MissionService.getHeroesByMission(missionId);
+    res.json(heroes);
+  } catch (error) {
+    next(error);
   }
 }

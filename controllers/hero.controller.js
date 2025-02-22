@@ -69,3 +69,23 @@ export async function restoreHero(req, res, next) {
     next(error)
   }
 }
+
+export async function assignMissionToHero(req, res, next) {
+  try {
+    const { heroId, missionId } = req.body;
+    const assignedMission = await HeroService.assignMissionToHero(heroId, missionId);
+    res.json(assignedMission);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function removeMissionFromHero(req, res, next) {
+  try {
+    const { heroId, missionId } = req.body;
+    const result = await HeroService.removeMissionFromHero(heroId, missionId);
+    res.json(result);
+  } catch (error) {
+    next(error);
+  }
+}

@@ -72,3 +72,11 @@ export async function restoreMission(id) {
 
   return await deletedMission.update({ isDeleted: false });
 } 
+
+export async function getHeroesByMission(missionId) {
+  const mission = await Mission.findByPk(missionId, {
+    include: Hero,
+  });
+
+  return mission ? mission.Heroes : null;
+}

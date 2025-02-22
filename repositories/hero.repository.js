@@ -72,3 +72,36 @@ export async function restoreHero(id) {
 
   return await deletedHero.update({ isDeleted: false });
 } 
+
+export async function assignMissionToHero(heroId, missionId) {
+  const hero = await Hero.findByPk(heroId);
+  const mission = await Mission.findByPk(missionId);
+
+  if (!hero || !mission) {
+    return null;
+  }
+
+  await hero.addMission(mission);
+  return hero;
+}
+
+
+export async function removeMissionFromHero(heroId, missionId) {
+  const hero = await Hero.findByPk(heroId);
+  const mission = await Mission.findByPk(missionId);
+
+  if (!hero || !mission) {
+    return null;
+  }
+
+  await hero.removeMission(mission);
+  return hero;
+}
+
+export async function getMissionsByHero(heroId) {
+  const hero = await Hero.findByPk(heroId, {
+    include: Mission,
+  });
+
+  return hero ? hero.Missions : null;
+}

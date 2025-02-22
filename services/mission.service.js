@@ -91,3 +91,13 @@ export async function restoreMission(id) {
 
   return restoredMission;
 }
+
+export async function getHeroesByMission(missionId) {
+  const mission = await MissionRepository.getMissionById(missionId);
+
+  if (!mission) {
+    throw new NotFoundError("La mission n'existe pas.");
+  }
+
+  return await MissionRepository.getHeroesByMission(missionId);
+}
