@@ -1,12 +1,11 @@
 export const missionsMocks = [
   { 
-    title: "Protect Gotham", 
-    description: "Batman must protect Gotham from crime." 
+    title: "Proteger Gotham", 
+    description: "Batman doit proteger Gotham." 
   },
   { 
-    title: "Save the Earth", 
-    description: "Superman must stop a meteor heading toward Earth." 
+    title: "Sauver la Terre", 
+    description: "Superman doit arreter une météorite." 
   },
 ];
-  
   

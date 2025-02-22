@@ -1,14 +1,14 @@
 export const heroesMocks = [
   {
     alias: "Batman",
-    identity: "Bruce Wayne",
+    identity: "Bruce",
     powerDate: "01/01/1985",
-    power: "Rich and skilled fighter",
+    power: "Intelligent et bon combattant",
   },
   {
     alias: "Superman",
-    identity: "Clark Kent",
+    identity: "Clark",
     powerDate: "01/01/1985",
-    power: "Super strength and flight",
+    power: "Force extrême et vol",
   },
 ];
