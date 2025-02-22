@@ -1,55 +1,33 @@
-const API_URL = "http://localhost:3000"; 
+// Récupérer les données des héros et des missions
+fetch('http://localhost:3000/api/v1/heroes/')
+  .then((response) => response.json())
+  .then((heroes) => {
+    fetch('http://localhost:3000/api/v1/missions/')
+      .then((response) => response.json())
+      .then((missions) => {
+        const heroesListContainer = document.getElementById('heroes-list');
 
-async function fetchHeroes() {
-    try {
-        const response = await fetch(`${API_URL}/heroes`);
-        const heroes = await response.json();
-        displayHeroes(heroes);
-    } catch (error) {
-        console.error("Erreur lors de la récupération des héros:", error);
-    }
-}
+        // Boucle sur chaque héros et créer une carte d'affichage
+        heroes.forEach((hero) => {
+          const heroCard = document.createElement('div');
+          heroCard.classList.add('hero-card');
 
-async function fetchMissions() {
-    try {
-        const response = await fetch(`${API_URL}/missions`);
-        const missions = await response.json();
-        displayMissions(missions);
-    } catch (error) {
-        console.error("Erreur lors de la récupération des missions:", error);
-    }
-}
-
-function displayHeroes(heroes) {
-    const container = document.getElementById("heroes-container");
-    container.innerHTML = "";
-
-    heroes.forEach(hero => {
-        const heroElement = document.createElement("div");
-        heroElement.innerHTML = `
-            <h2>${hero.alias} (${hero.identity})</h2>
+          heroCard.innerHTML = `
+            <h2>${hero.alias}</h2>
+            <p><strong>Identité :</strong> ${hero.identity}</p>
             <p><strong>Pouvoir :</strong> ${hero.power}</p>
-            <p><strong>Date d'obtention du pouvoir :</strong> ${hero.powerDate}</p>
-        `;
-        container.appendChild(heroElement);
-    });
-}
-
-function displayMissions(missions) {
-    const container = document.getElementById("missions-container");
-    container.innerHTML = ""; 
-
-    missions.forEach(mission => {
-        const missionElement = document.createElement("div");
-        missionElement.innerHTML = `
-            <h2>${mission.title}</h2>
-            <p>${mission.description}</p>
-        `;
-        container.appendChild(missionElement);
-    });
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-    fetchHeroes();
-    fetchMissions();
-});
+            <p><strong>Date d'activation :</strong> ${hero.powerDate}</p>
+            <h3>Missions :</h3>
+            <ul>
+              ${missions
+                .filter((mission) => mission.heroes.includes(hero.id)) // Filtrer les missions associées au héros
+                .map((mission) => `<li>${mission.title}</li>`)
+                .join('')}
+            </ul>
+          `;
+          heroesListContainer.appendChild(heroCard); // Ajouter la carte du héros dans le conteneur
+        });
+      })
+      .catch((error) => console.error('Error fetching missions:', error));
+  })
+  .catch((error) => console.error('Error fetching heroes:', error));

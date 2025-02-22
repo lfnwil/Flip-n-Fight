@@ -1,16 +1,49 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Héros et Missions</title>
-    <script defer src="script.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Héros et Missions</title>
+  <style>
+    .hero-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .hero-card {
+      border: 1px solid #ddd;
+      padding: 20px;
+      border-radius: 8px;
+      width: 300px;
+      margin: 10px;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    h2 {
+      color: #007bff;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    ul li {
+      background-color: #f1f1f1;
+      padding: 5px;
+      margin: 5px 0;
+      border-radius: 4px;
+    }
+  </style>
 </head>
 <body>
-    <h1>Liste des Héros</h1>
-    <div id="heroes-container"></div>
+  <h1>Liste des Héros et Missions</h1>
+  <div id="heroes-list" class="hero-container"></div>
 
-    <h1>Liste des Missions</h1>
-    <div id="missions-container"></div>
+  <script src="script.js"></script> 
 </body>
 </html>

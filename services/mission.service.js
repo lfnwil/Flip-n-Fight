@@ -63,9 +63,9 @@ export async function deleteMission(id) {
 }
 
 export async function getAllMissions() {
-  const Missions = await MissionRepository.getAllMissions();
+  const missions = await MissionRepository.getAllMissions(); 
 
-  const formattedMissions = missions.map((mission) => {
+  const formattedMissions = missions.map((mission) => {  
     return {
       id: mission.id,
       title: mission.title,
@@ -75,6 +75,7 @@ export async function getAllMissions() {
 
   return formattedMissions;
 }
+
 
 export async function restoreMission(id) {
   const restoredMission = await MissionRepository.restoreMission(id);

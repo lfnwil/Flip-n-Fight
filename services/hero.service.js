@@ -9,7 +9,7 @@ export async function getHeroById(id) {
   const hero = await HeroRepository.getHeroById(id);
 
   if (!hero) {
-    throw new NotFoundError("Le héros n'existe pas.");
+    throw new NotFoundError ("Le héros n'existe pas.");
   }
 
   return {

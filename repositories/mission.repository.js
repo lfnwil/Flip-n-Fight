@@ -42,7 +42,7 @@ export async function deleteMission(id) {
 }
 
 export async function getAllMissions() {
-  return await Mission.findAll();
+  return await Mission.findAll(); 
 }
 
 export async function missionExists(title) {

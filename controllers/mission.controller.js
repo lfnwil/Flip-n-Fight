@@ -5,7 +5,7 @@ export async function getAllMissions(req, res, next) {
     const missions = await MissionService.getAllMissions();
     res.json(missions);
   } catch (error) {
-    next(error)
+    next(error);
   }
 }
 
