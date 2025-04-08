@@ -1,0 +1,12 @@
+# Node
+node_modules/
+.env
+
+# Vite
+/client/dist
+
+# Logs
+*.log
+
+# SQLite
+*.sqlite3
