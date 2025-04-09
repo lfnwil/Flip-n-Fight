@@ -4,7 +4,7 @@ import User from "./user.model.js";
 import Card from "./card.model.js";
 import UserCard from "./userCard.model.js";
 import Deck from "./deck.model.js";
-import DeckCard from "./deckcard.model.js";
+import DeckCard from "./deckCard.model.js";
 import Match from "./match.model.js";
 
 User.hasMany(UserCard, { foreignKey: "userId" });
