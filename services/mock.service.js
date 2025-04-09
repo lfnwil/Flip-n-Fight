@@ -1,5 +1,5 @@
-import { heroesMocks } from "../mocks/hero.mock.js";
-import { missionsMocks } from "../mocks/mission.mock.js";
+import { cardsMocks } from "../mocks/cards.mock.js";
+import { decksMocks } from "../mocks/mission.mock.js";
 import { HeroService, MissionService } from "./index.service.js";
 
 export async function initializeHeroMock() {

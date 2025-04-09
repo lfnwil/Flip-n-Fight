@@ -10,8 +10,8 @@ export async function getDeckById(id) {
   return await Deck.findByPk(id);
 }
 
-export async function createDeck(data) {
-  return await Deck.create(data);
+export async function createDeck(userId, name) {
+  return await Deck.create({ user_id: userId, name: name });
 }
 
 export async function updateDeck(id, updates) {
@@ -33,5 +33,5 @@ export async function getDeckWithCards(deckId) {
 }
 
 export async function getDeckByUserId(userId) {
-  return await Deck.findOne({ where: { userId } });
+  return await Deck.findOne({ where: { user_id: userId } });
 }

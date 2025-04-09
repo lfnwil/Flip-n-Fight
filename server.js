@@ -6,7 +6,6 @@ import heroRouter from './routers/hero.router.js';
 import missionRouter from './routers/mission.router.js';
 import { logMiddleware } from './middlewares/log.middleware.js';
 import { errorHandler } from './middlewares/error.middleware.js';
-import { getAllHeroes } from './repositories/hero.repository.js';
 import { initializeHeroMock } from "./services/mock.service.js";
 
 await sequelize.sync({ force: true });

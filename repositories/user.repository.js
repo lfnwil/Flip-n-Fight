@@ -1,7 +1,10 @@
+// repositories/user.repository.js
+
 import User from "../models/user.model.js";
 import Deck from "../models/deck.model.js";
 import DeckCard from "../models/deckCard.model.js";
 import Card from "../models/card.model.js";
+import { Op } from "sequelize";
 
 export async function getAllUsers() {
   return await User.findAll();
@@ -35,9 +38,9 @@ export async function updateUserCoins(userId, amount) {
 }
 
 export async function getUserCollection(userId) {
-  const deck = await Deck.findOne({ where: { userId } });
+  const deck = await Deck.findOne({ where: { user_id: userId } });
   if (!deck) return [];
-  const deckCards = await DeckCard.findAll({ where: { deckId: deck.id } });
-  const cardIds = deckCards.map(dc => dc.cardId);
+  const deckCards = await DeckCard.findAll({ where: { deck_id: deck.id } });
+  const cardIds = deckCards.map(dc => dc.card_id);
   return await Card.findAll({ where: { id: { [Op.in]: cardIds } } });
 }
