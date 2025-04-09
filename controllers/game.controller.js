@@ -1,6 +1,6 @@
 import { HeroService } from "../services/index.service.js";
 
-export async function getAllHeroes(req, res, next) {
+export async function getAllCard(req, res, next) {
   try {
     const heroes = await HeroService.getAllHeroes();
     res.json(heroes);

@@ -20,7 +20,7 @@ app.use(express.json());
 app.use(logMiddleware);
 app.use(express.static(path.join(path.resolve(), 'public')));
 
-app.use("/api/v1/heroes", heroRouter); 
+app.use("/api/v1/heroes", heroRouter);
 app.use("/api/v1/missions", missionRouter);
 
 app.get('/missions', (req, res) => {

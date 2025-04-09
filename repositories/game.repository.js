@@ -1,107 +1,77 @@
-import Hero from "../models/hero.model.js";
+import User from "../models/User.model.js";
+import Deck from "../models/Deck.model.js";
+import UserCard from "../models/UserCard.model.js";
+import Card from "../models/Card.model.js";
 
-export async function createHero({ alias, identity, power, powerDate }) {
-  const hero = await Hero.create({ alias, identity, power, powerDate });
-  return hero;
+// Créer un utilisateur
+export async function createUser({ username, email, password, coins = 0 }) {
+  return await User.create({ username, email, password, coins });
 }
 
-export async function getHeroById(id) {
-  const hero = await Hero.findByPk(id);
-  if (!hero) {
-    return null;
-  }
-
-  return hero;
+//  Récupérer un utilisateur par ID
+export async function getUserById(id) {
+  return await User.findByPk(id);
 }
 
-export async function getDeletedHeroById(id) {
-  const hero = await Hero.scope("deleted").findByPk(id);
-  if (!hero) {
-    return null;
-  }
-
-  return hero;
+//  Mettre à jour un utilisateur
+export async function updateUser(id, values) {
+  const user = await getUserById(id);
+  if (!user) return null;
+  return await user.update(values);
 }
 
-export async function updateHero(id, values) {
-  const hero = await getHeroById(id);
-  if (!hero) {
-    return null;
-  }
-
-  return await hero.update(values);
+// Supprimer un utilisateur
+export async function deleteUser(id) {
+  const user = await getUserById(id);
+  if (!user) return null;
+  await user.destroy();
+  return true;
 }
 
-export async function deleteHero(id) {
-  const hero = await getHeroById(id);
-  if (!hero) {
-    return null;
-  }
-
-  return await updateHero(hero.id, { isDeleted: true });
+//Lister tous les utilisateurs
+export async function getAllUsers() {
+  return await User.findAll();
 }
 
-export async function getAllHeroes() {
-  return await Hero.findAll();
+//Vérifier existence d’un utilisateur par email
+export async function userExistsByEmail(email) {
+  const user = await User.findOne({ where: { email } });
+  return Boolean(user);
 }
 
-export async function heroExists(alias) {
-  const hero = await Hero.findOne({ where: { alias } });
-  return Boolean(hero);
+//Vérifier existence d’un utilisateur par pseudo
+export async function userExistsByUsername(username) {
+  const user = await User.findOne({ where: { username } });
+  return Boolean(user);
 }
 
-export async function heroDeletedExists(alias) {
-  const hero = await Hero.scope("deleted").findOne({ where: { alias } });
-  return Boolean(hero);
+// Récupérer les decks d’un utilisateur
+export async function getUserDecks(userId) {
+  const user = await User.findByPk(userId, {
+    include: [{ model: Deck }],
+  });
+  return user ? user.Decks : null;
 }
 
-export async function getAllHeroesWithDeleted() {
-  await Hero.scope("withDeleted").findAll();
-}
-
-export async function getAllHeroesDeleted() {
-  await Hero.scope("deleted").findAll();
-}
-
-export async function restoreHero(id) {
-  const deletedHero = await getDeletedHeroById(id);  
-
-  if (!deletedHero) {
-    return null;
-  }
-
-  return await deletedHero.update({ isDeleted: false });
-} 
-
-export async function assignMissionToHero(heroId, missionId) {
-  const hero = await Hero.findByPk(heroId);
-  const mission = await Mission.findByPk(missionId);
-
-  if (!hero || !mission) {
-    return null;
-  }
-
-  await hero.addMission(mission);
-  return hero;
-}
-
-
-export async function removeMissionFromHero(heroId, missionId) {
-  const hero = await Hero.findByPk(heroId);
-  const mission = await Mission.findByPk(missionId);
-
-  if (!hero || !mission) {
-    return null;
-  }
-
-  await hero.removeMission(mission);
-  return hero;
-}
-
-export async function getMissionsByHero(heroId) {
-  const hero = await Hero.findByPk(heroId, {
-    include: Mission,
+// Récupérer la collection de cartes d’un utilisateur
+export async function getUserCards(userId) {
+  const user = await User.findByPk(userId, {
+    include: [
+      {
+        model: Card,
+        through: { model: UserCard, attributes: ["quantity"] },
+      },
+    ],
   });
 
-  return hero ? hero.Missions : null;
+  if (!user) return null;
+
+  return user.Cards.map(card => ({
+    id: card.id,
+    name: card.name,
+    type: card.type,
+    rarity: card.rarity,
+    description: card.description,
+    quantity: card.UserCard.quantity,
+  }));
 }
