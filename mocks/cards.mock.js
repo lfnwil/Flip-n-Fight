@@ -1,46 +1,30 @@
-const mockCards = [
+export const cardsMock = [
   {
-    name: "Flame Strike",
+    name: "Flame",
     type: "attack",
-    rarity: "rare",
+    rarity: "epic", 
     color: "red",
-    image: "https://example.com/images/flame-strike.png",
+    image: "flame.png"
   },
   {
-    name: "Shield Wall",
+    name: "Shield",
     type: "defense",
     rarity: "common",
     color: "blue",
-    image: "https://example.com/images/shield-wall.png",
+    image: "shield.png"
   },
   {
-    name: "Healing Light",
+    name: "Potion",
     type: "heal",
-    rarity: "epic",
-    color: "green",
-    image: "https://example.com/images/healing-light.png",
-  },
-  {
-    name: "Mana Boost",
-    type: "bonus",
-    rarity: "legendary",
-    color: "purple",
-    image: "https://example.com/images/mana-boost.png",
-  },
-  {
-    name: "Poison Trap",
-    type: "malus",
     rarity: "rare",
-    color: "yellow",
-    image: "https://example.com/images/poison-trap.png",
+    color: "green",
+    image: "potion.png"
   },
   {
-    name: "Dragon Breath",
+    name: "Lightning",
     type: "special",
-    rarity: "legendary",
-    color: "red",
-    image: "https://example.com/images/dragon-breath.png",
-  },
+    rarity: "epic",
+    color: "yellow",
+    image: "lightning.png"
+  }
 ];
-
-export default mockCards;
