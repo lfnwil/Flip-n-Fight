@@ -1,8 +1,4 @@
-// repositories/user.repository.js
-
-import User from "../models/user.model.js";
-import Deck from "../models/deck.model.js";
-import DeckCard from "../models/deckCard.model.js";
+import { User, Deck, DeckCard } from "../models/index.model.js";
 import Card from "../models/card.model.js";
 import { Op } from "sequelize";
 

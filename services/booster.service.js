@@ -1,25 +1,39 @@
-import { NotFoundError } from "../errors/api.error.js";
-import { 
-  getDeckByUserId 
-} from "../repositories/deck.repository.js";
-import { 
-  getRandomCards 
-} from "../repositories/card.repository.js";
-import { 
-  addCardToDeck 
-} from "../repositories/deckCard.repository.js";
+import { UserRepository, CardRepository, UserCardRepository } from "../repositories/index.js";
 
-export async function createBoosterForUser(user_id, cardCount = 3) {
-  const deck = await getDeckByUserId(user_id);
-  if (!deck) {
-    throw new NotFoundError("Aucun deck trouvé pour cet utilisateur");
+export async function buyBooster(userId) {
+  try {
+    const user = await UserRepository.getUserById(userId);
+    if (!user || user.coins < 10) {
+      throw new Error("Pas assez de pièces pour acheter un booster.");
+    }
+
+    user.coins -= 10;
+    await user.save();
+
+    const newCards = await openBooster(userId);
+    
+    return newCards;
+  } catch (error) {
+    throw new Error("Erreur lors de l'achat du booster : " + error.message);
   }
+}
 
-  const randomCards = await getRandomCards(cardCount);
+export async function openBooster(userId) {
+  try {
+    const boosterCards = [];
+    
+    for (let i = 0; i < 3; i++) {
+      const randomCard = await CardRepository.getRandomCard();
+      if (!randomCard) {
+        throw new Error("Erreur lors de la génération des cartes du booster.");
+      }
+      
+      await UserCardRepository.addUserCard(userId, randomCard.id, 1);
+      boosterCards.push(randomCard);
+    }
 
-  for (const card of randomCards) {
-    await addCardToDeck(deck.id, card.id);
+    return boosterCards;
+  } catch (error) {
+    throw new Error("Erreur lors de l'ouverture du booster : " + error.message);
   }
-
-  return randomCards;
 }

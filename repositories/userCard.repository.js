@@ -1,4 +1,4 @@
-import UserCard from "../models/userCard.model.js";
+import UserCard from "../models/index.model.js";
 
 export async function getUserCards(userId) {
   return await UserCard.findAll({ where: { user_id: userId } });

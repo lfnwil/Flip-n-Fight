@@ -1,5 +1,4 @@
-import DeckCard from "../models/deckCard.model.js";
-import Card from "../models/card.model.js";
+import { DeckCard, Card } from "../models/index.model.js";
 
 export async function getAllDeckCards() {
   return await DeckCard.findAll();
