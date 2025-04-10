@@ -1,4 +1,4 @@
-import Match from "../models/index.model.js";
+import { Match } from "../models/index.model.js";
 
 export async function getAllMatches() {
   return await Match.findAll();

@@ -1,30 +1,22 @@
 export const cardsMock = [
-  {
-    name: "Flame",
-    type: "attack",
-    rarity: "epic", 
-    color: "red",
-    image: "flame.png"
-  },
-  {
-    name: "Shield",
-    type: "defense",
-    rarity: "common",
-    color: "blue",
-    image: "shield.png"
-  },
-  {
-    name: "Potion",
-    type: "heal",
-    rarity: "rare",
-    color: "green",
-    image: "potion.png"
-  },
-  {
-    name: "Lightning",
-    type: "special",
-    rarity: "epic",
-    color: "yellow",
-    image: "lightning.png"
-  }
+  { name: "Flamme", type: "attack", rarity: "common", color: "red", image: "flamme.png" },
+  { name: "Coup de poing", type: "attack", rarity: "common", color: "orange", image: "punch.png" },
+  { name: "Explosion", type: "attack", rarity: "rare", color: "red", image: "explosion.png" },
+  { name: "Katana", type: "attack", rarity: "epic", color: "purple", image: "katana.png" },
+  { name: "Canon laser", type: "attack", rarity: "legendary", color: "gold", image: "laser.png" },
+  { name: "Bouclier", type: "defense", rarity: "common", color: "blue", image: "shield.png" },
+  { name: "Barrière", type: "defense", rarity: "common", color: "blue", image: "barrier.png" },
+  { name: "Armure", type: "defense", rarity: "rare", color: "gray", image: "armor.png" },
+  { name: "Sphère protectrice", type: "defense", rarity: "epic", color: "lightblue", image: "bubble.png" },
+  { name: "Mur d’énergie", type: "defense", rarity: "legendary", color: "white", image: "energy-wall.png" },
+  { name: "Potion", type: "heal", rarity: "common", color: "green", image: "potion.png" },
+  { name: "Plante médicinale", type: "heal", rarity: "common", color: "green", image: "herb.png" },
+  { name: "Fontaine de vie", type: "heal", rarity: "rare", color: "lightgreen", image: "fountain.png" },
+  { name: "Régénération", type: "heal", rarity: "epic", color: "teal", image: "regen.png" },
+  { name: "Élixir légendaire", type: "heal", rarity: "legendary", color: "gold", image: "elixir.png" },
+  { name: "Éclair", type: "special", rarity: "epic", color: "yellow", image: "lightning.png" },
+  { name: "Chaos", type: "malus", rarity: "rare", color: "black", image: "chaos.png" },
+  { name: "Démon", type: "malus", rarity: "epic", color: "darkred", image: "demon.png" },
+  { name: "Ange", type: "bonus", rarity: "epic", color: "white", image: "angel.png" },
+  { name: "Bénédiction", type: "bonus", rarity: "legendary", color: "lightyellow", image: "blessing.png" }
 ];
