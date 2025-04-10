@@ -11,4 +11,5 @@ node_modules/
 # SQLite
 *.sqlite3
 
+#tests
 /tests

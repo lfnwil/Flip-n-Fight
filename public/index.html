@@ -1,37 +1,65 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Flip ‘n’ Fight - Jeu de Cartes et Combat</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Flip 'n' Fight - Menu</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 2rem;
+    }
+    .btn {
+      display: block;
+      margin: 1rem 0;
+      padding: 1rem;
+      background-color: #333;
+      color: white;
+      text-align: center;
+      border-radius: 8px;
+      text-decoration: none;
+      width: 250px;
+    }
+    #switch-user {
+      margin-top: 2rem;
+      background-color: #666;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>Bienvenue sur Flip ‘n’ Fight</h1>
-    <nav>
-      <ul class="liens">
-        <li><a href="cards.html">Cartes</a></li>
-        <li><a href="deck.html">Deck</a></li>
-        <li><a href="booster.html">Booster</a></li>
-        <li><a href="combat.html">Combat</a></li>
-      </ul>
-    </nav>
-  </header>
-  
-  <main>
-    <section class="intro">
-      <h2>Un jeu de cartes stratégique en 1v1</h2>
-      <p>
-        Construisez votre deck, ouvrez des boosters et défiez un adversaire en combat dans un univers mêlant mémoire et stratégie.
-      </p>
-    </section>
-  </main>
+  <h1 id="welcome-message">Chargement...</h1>
+  <p id="user-coins"></p>
 
-  <footer>
-    <p>&copy; 2025 Flip ‘n’ Fight</p>
-  </footer>
-  
-  <script src="app.js"></script>
+  <a href="/deck" class="btn">Gérer mon deck</a>
+  <a href="/combat" class="btn">Lancer un combat</a>
+  <a href="/booster" class="btn">Acheter un booster</a>
+
+  <button id="switch-user" class="btn">Changer de joueur</button>
+
+  <script>
+    const loadUser = async () => {
+      const activeUserId = localStorage.getItem('activeUserId') || '1';
+      try {
+        const res = await fetch(`/api/v1/users/${activeUserId}`);
+        if (!res.ok) throw new Error("Erreur lors de la récupération du joueur");
+        const user = await res.json();
+        document.getElementById('welcome-message').textContent = `Bienvenue, ${user.username} !`;
+        document.getElementById('user-coins').textContent = `Pièces : ${user.coins}`;
+      } catch (error) {
+        console.error(error);
+        document.getElementById('welcome-message').textContent = "Erreur de chargement du joueur.";
+      }
+    };
+
+    document.getElementById('switch-user').addEventListener('click', () => {
+      const currentId = localStorage.getItem('activeUserId') || '1';
+      const nextId = currentId === '1' ? '2' : '1';
+      localStorage.setItem('activeUserId', nextId);
+      loadUser(); // recharge les infos du nouvel utilisateur
+    });
+
+    document.addEventListener('DOMContentLoaded', loadUser);
+  </script>
 </body>
 </html>

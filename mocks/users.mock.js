@@ -7,6 +7,6 @@ export const usersMock = [
   {
     username: "player2",
     password: "password2",
-    coins: 10
+    coins: 50
   }
 ];
