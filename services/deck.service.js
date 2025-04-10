@@ -1,4 +1,4 @@
-import { DeckRepository } from "../repositories/index.js";
+import { DeckRepository } from "../repositories/index.repository.js";
 
 export async function getAllDecks() {
   try {

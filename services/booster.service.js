@@ -1,4 +1,4 @@
-import { UserRepository, CardRepository, UserCardRepository } from "../repositories/index.js";
+import { UserRepository, CardRepository, UserCardRepository } from "../repositories/index.repository.js";
 
 export async function buyBooster(userId) {
   try {

@@ -1,4 +1,4 @@
-import { DeckCardRepository, CardRepository } from "../repositories/index.js";
+import { DeckCardRepository, CardRepository } from "../repositories/index.repository.js";
 
 // Fonction pour récupérer toutes les cartes de deck
 export async function getAllDeckCards() {

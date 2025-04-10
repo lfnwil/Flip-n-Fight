@@ -1,42 +1,67 @@
-import { cardsMocks } from "../mocks/cards.mock.js";
-import { decksMocks } from "../mocks/mission.mock.js";
-import { HeroService, MissionService } from "./index.service.js";
+import {
+  cardsMock,
+  usersMock,
+  decksMock,
+  userCardsMock,
+  deckCardsMock,
+  matchesMock,
+} from "../mocks/index.mock.js";
 
-export async function initializeHeroMock() {
-  console.log("========== START HERO & MISSION MOCKING ==========");
+import {
+  CardService,
+  UserService,
+  DeckService,
+  UserCardService,
+  DeckCardService,
+  MatchService,
+} from "./index.service.js";
 
-  for (const hero of heroesMocks) {
-    try {
-      const newHero = await HeroService.createHero(hero);
-      console.log("[HERO ADDED]", newHero);
-    } catch (error) {
-      console.log("[ERROR ADDING HERO]", error.message);
-    }
-  }
-
-  for (const mission of missionsMocks) {
-    try {
-      const newMission = await MissionService.createMission(mission);
-      console.log("[MISSION ADDED]", newMission);
-    } catch (error) {
-      console.log("[ERROR ADDING MISSION]", error.message);
-    }
-  }
+export async function initializeGameMock() {
+  // console.log("========== INITIALISATION DE LA BASE DE DONNÉES ==========");
 
   try {
-    const heroes = await HeroService.getAllHeroes();
-    const missions = await MissionService.getAllMissions();
-
-    if (heroes.length > 0 && missions.length > 0) {
-      await HeroService.assignMissionToHero(heroes[0].id, missions[0].id);
-      await HeroService.assignMissionToHero(heroes[1].id, missions[1].id);
+    for (const user of usersMock) {
+      const newUser = await UserService.createUser(user);
+      // console.log("[USER]", newUser.username, "créé.");
     }
 
-    console.log("✅ Missions assignées aux héros !");
+    for (const card of cardsMock) {
+      const newCard = await CardService.createCard(card);
+      // console.log("[CARD]", newCard.name, "créée.");
+    }
+
+    for (const deck of decksMock) {
+      const newDeck = await DeckService.createDeck(deck.user_id, deck.name);
+      // console.log("[DECK] pour user_id:", deck.user_id, "créé.");
+    }
+
+    for (const userCard of userCardsMock) {
+      await UserCardService.addUserCard(
+        userCard.user_id,
+        userCard.card_id,
+        userCard.quantity
+      );
+      // console.log("[USER_CARD] user", userCard.user_id, ">", userCard.card_id);
+    }
+
+    for (const deckCard of deckCardsMock) {
+      await DeckCardService.addCardToDeck(
+        deckCard.deck_id,
+        deckCard.card_id,
+        deckCard.quantity
+      );
+      // console.log("[DECK_CARD] deck", deckCard.deck_id, ">", deckCard.card_id);
+    }
+
+    for (const match of matchesMock) {
+      const newMatch = await MatchService.createMatchWithPlayers(match);
+      // onsole.log("[MATCH] créé avec ID:", newMatch.id);
+    }
+
+    console.log("✅ Base initialisée avec succès !");
   } catch (error) {
-    console.log("[ERROR ASSIGNING MISSIONS]", error.message);
+    console.error("❌ Erreur pendant l'initialisation :", error.message);
   }
 
-  console.log("========== END HERO & MISSION MOCKING ==========");
-  return await HeroService.getAllHeroes();
+  // console.log("========== FIN DE L'INITIALISATION ==========");
 }

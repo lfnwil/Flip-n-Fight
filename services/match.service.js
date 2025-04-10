@@ -1,4 +1,4 @@
-import { MatchRepository } from "../repositories/index.js";
+import { MatchRepository } from "../repositories/index.repository.js";
 
 export async function getAllMatches() {
   try {

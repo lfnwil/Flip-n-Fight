@@ -1,4 +1,4 @@
-import { UserRepository } from "../repositories/index.js";
+import { UserRepository } from "../repositories/index.repository.js";
 
 export async function getAllUsers() {
   try {

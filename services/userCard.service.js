@@ -1,4 +1,4 @@
-import { UserCardRepository } from "../repositories/index.js";
+import { UserCardRepository } from "../repositories/index.repository.js";
 
 export async function getUserCards(userId) {
   try {

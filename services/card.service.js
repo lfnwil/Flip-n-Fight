@@ -1,8 +1,4 @@
-import {
-  ConflictError,
-  BadRequestError,
-  NotFoundError,
-} from "../errors/api.error.js";
+import {ConflictError, BadRequestError,NotFoundError } from "../errors/api.error.js";
 
 import { CardRepository } from "../repositories/index.repository.js";
 
@@ -26,7 +22,7 @@ export async function getCardById(id) {
 export async function getAllCards() {
   const card = await CardRepository.getAllCards(); 
 
-  const formattedCard = cards.map((card) => {  
+  const formattedCard = card.map((card) => {  
     return {
       id: card.id,
       name: card.name,
@@ -36,7 +32,7 @@ export async function getAllCards() {
       image : card.image,
     };
   });
-
+  
   return formattedCard;
 }
 
