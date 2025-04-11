@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Flip 'n' Fight - Menu</title>
+  <title>Flip 'n' Fight - Deck</title>
   <link rel="stylesheet" href="assets/index.css">
 </head>
 <body>
@@ -26,8 +26,9 @@
   
   <p id="user-coins"></p>
 
-  
-  <a href="/combat" class="btn combat">Combattre</a>
+  <section>
+    <div class="card-list"></div>
+  </section>
   
 
   <footer>
@@ -53,7 +54,7 @@
       const currentId = localStorage.getItem('activeUserId') || '1';
       const nextId = currentId === '1' ? '2' : '1';
       localStorage.setItem('activeUserId', nextId);
-      loadUser(); // recharge les infos du nouvel utilisateur
+      loadUser();
     });
 
     document.addEventListener('DOMContentLoaded', loadUser);
