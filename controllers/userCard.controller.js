@@ -77,3 +77,13 @@ export async function restoreUserCard(req, res, next) {
     next(error);
   }
 }
+
+export async function getUserCardsByUserId(req, res, next) {
+  try {
+    const { userId } = req.params;
+    const userCards = await UserCardService.getUserCards(userId);
+    res.json(userCards);
+  } catch (error) {
+    next(error);
+  }
+}

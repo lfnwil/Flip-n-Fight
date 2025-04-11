@@ -11,5 +11,6 @@ router.delete("/:id", UserCardController.deleteUserCard);
 router.post("/:userCardId/assign-mission/:missionId", UserCardController.assignMissionToUserCard);
 router.delete("/:userCardId/remove-mission/:missionId", UserCardController.removeMissionFromUserCard);
 router.patch("/:id/restore", UserCardController.restoreUserCard);
+router.get('/user/:userId', UserCardController.getUserCardsByUserId);
 
 export default router;
