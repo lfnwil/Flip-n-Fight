@@ -1,6 +1,4 @@
-import Deck from "../models/deck.model.js";
-import DeckCard from "../models/deckCard.model.js";
-import Card from "../models/card.model.js";
+import { Deck, Card } from "../models/index.model.js";
 
 export async function getAllDecks() { 
   return await Deck.findAll();
@@ -10,8 +8,8 @@ export async function getDeckById(id) {
   return await Deck.findByPk(id);
 }
 
-export async function createDeck(data) {
-  return await Deck.create(data);
+export async function createDeck(userId, name) {
+  return await Deck.create({ user_id: userId, name: name });
 }
 
 export async function updateDeck(id, updates) {
@@ -33,5 +31,5 @@ export async function getDeckWithCards(deckId) {
 }
 
 export async function getDeckByUserId(userId) {
-  return await Deck.findOne({ where: { userId } });
+  return await Deck.findOne({ where: { user_id: userId } });
 }

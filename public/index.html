@@ -1,32 +1,65 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mission et Héros</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Flip 'n' Fight - Menu</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 2rem;
+    }
+    .btn {
+      display: block;
+      margin: 1rem 0;
+      padding: 1rem;
+      background-color: #333;
+      color: white;
+      text-align: center;
+      border-radius: 8px;
+      text-decoration: none;
+      width: 250px;
+    }
+    #switch-user {
+      margin-top: 2rem;
+      background-color: #666;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>Bienvenue sur l'interface des Missions et Héros</h1>
-    <nav>
-      <ul class="liens">
-        <li><a href="missions.html">Missions</a></li>
-        <li><a href="heroes.html">Héros</a></li>
-      </ul>
-    </nav>
-  </header>
-  
-  <main>
-    <section class="intro">
-      <h2>Nos Missions et Héros</h2>
-      <p>Cliquez sur les liens pour voir les missions et les héros disponibles.</p>
-    </section>
-  </main>
+  <h1 id="welcome-message">Chargement...</h1>
+  <p id="user-coins"></p>
 
-  <footer>
-  </footer>
-  
-  <script src="app.js"></script>
+  <a href="/deck" class="btn">Gérer mon deck</a>
+  <a href="/combat" class="btn">Lancer un combat</a>
+  <a href="/booster" class="btn">Acheter un booster</a>
+
+  <button id="switch-user" class="btn">Changer de joueur</button>
+
+  <script>
+    const loadUser = async () => {
+      const activeUserId = localStorage.getItem('activeUserId') || '1';
+      try {
+        const res = await fetch(`/api/v1/users/${activeUserId}`);
+        if (!res.ok) throw new Error("Erreur lors de la récupération du joueur");
+        const user = await res.json();
+        document.getElementById('welcome-message').textContent = `Bienvenue, ${user.username} !`;
+        document.getElementById('user-coins').textContent = `Pièces : ${user.coins}`;
+      } catch (error) {
+        console.error(error);
+        document.getElementById('welcome-message').textContent = "Erreur de chargement du joueur.";
+      }
+    };
+
+    document.getElementById('switch-user').addEventListener('click', () => {
+      const currentId = localStorage.getItem('activeUserId') || '1';
+      const nextId = currentId === '1' ? '2' : '1';
+      localStorage.setItem('activeUserId', nextId);
+      loadUser(); // recharge les infos du nouvel utilisateur
+    });
+
+    document.addEventListener('DOMContentLoaded', loadUser);
+  </script>
 </body>
 </html>

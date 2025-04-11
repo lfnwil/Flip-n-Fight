@@ -1,9 +1,12 @@
-export function mockUser(overrides = {}) {
-    return {
-      username: "user_" + Math.floor(Math.random() * 1000),
-      password: "securepass123",
-      coins: 100,
-      ...overrides,
-    };
+export const usersMock = [
+  {
+    username: "player1",
+    password: "password1",
+    coins: 10
+  },
+  {
+    username: "player2",
+    password: "password2",
+    coins: 50
   }
-  
+];

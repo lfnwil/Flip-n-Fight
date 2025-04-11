@@ -7,6 +7,7 @@ import Deck from "./deck.model.js";
 import DeckCard from "./deckCard.model.js";
 import Match from "./match.model.js";
 
+// Associations
 User.hasMany(UserCard, { foreignKey: "userId" });
 UserCard.belongsTo(User, { foreignKey: "userId" });
 
@@ -30,12 +31,4 @@ Match.belongsTo(User, { foreignKey: "player1Id", as: "Player1" });
 Match.belongsTo(User, { foreignKey: "player2Id", as: "Player2" });
 Match.belongsTo(User, { foreignKey: "winnerId", as: "Winner" });
 
-export {
-  sequelize,
-  User,
-  Card,
-  UserCard,
-  Deck,
-  DeckCard,
-  Match,
-};
+export { sequelize, User, Card, UserCard, Deck, DeckCard, Match };

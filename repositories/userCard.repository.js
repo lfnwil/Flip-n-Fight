@@ -1,37 +1,15 @@
-import { User } from "../models/index.model.js";
+import { UserCard } from "../models/index.model.js";
 
-export async function createUser({username, password}) {
-    const user = await User.create({ });
-    return user;
+export async function getUserCards(userId) {
+  return await UserCard.findAll({ where: { user_id: userId } });
 }
 
-export async function getAllUsers() {
-  return await User.findAll();
-}
-
-export async function getUserById(id) {
-  const user = await User.findByPk(id);
-  if (!user) {
-    return null;
+export async function addUserCard(userId, cardId, quantity) {
+  let userCard = await UserCard.findOne({ where: { user_id: userId, card_id: cardId } });
+  if (userCard) {
+    userCard.quantity += quantity;
+    return await userCard.save();
+  } else {
+    return await UserCard.create({ user_id: userId, card_id: cardId, quantity });
   }
-
-  return user;
-}
-
-export async function updateUser(id, values) {
-  const user = await getUserById(id);
-  if (!user) {
-    return null;
-  }
-
-  return await user.update(values);
-}
-
-export async function deleteUser(id) {
-  const user = await getUserById(id);
-  if (!user) {
-    return null;
-  }
-
-  return await updateHero(user.id, { isDeleted: true });
 }

@@ -1,5 +1,4 @@
-import Card from "../models/card.model.js";
-import { Op } from "sequelize";
+import { Card } from "../models/index.model.js"; 
 
 export async function getAllCards() {
   return await Card.findAll();

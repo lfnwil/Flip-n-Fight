@@ -1,5 +1,4 @@
-import DeckCard from "../models/deckCard.model.js";
-import Card from "../models/card.model.js";
+import { DeckCard, Card } from "../models/index.model.js";
 
 export async function getAllDeckCards() {
   return await DeckCard.findAll();
@@ -25,14 +24,15 @@ export async function deleteDeckCard(id) {
   return await deckCard.destroy();
 }
 
-export async function addCardToDeck(deck_id, card_id) {
-  return await DeckCard.create({ deck_id, card_id });
+export async function addCardToDeck(deckId, cardId, quantity) {
+  return await DeckCard.create({ deck_id: deckId, card_id: cardId, quantity });
 }
 
 export async function removeCardFromDeck(deckId, cardId) {
-  const deckCard = await DeckCard.findOne({ where: { deckId, cardId } });
-  if (!deckCard) return null;
-  return await deckCard.destroy();
+  const deckCard = await DeckCard.findOne({ where: { deck_id: deckId, card_id: cardId } });
+  if (deckCard) {
+    await deckCard.destroy();
+  }
 }
 
 export async function getCardsInDeck(deckId) {
