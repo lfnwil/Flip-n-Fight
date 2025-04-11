@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Jeu Memory - 1V1 Local</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    .card {
+      width: 100px;
+      height: 100px;
+      margin: 10px;
+      display: inline-block;
+      background-color: #ddd;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 2em;
+      text-align: center;
+      line-height: 100px;
+      user-select: none;
+      transition: background-color 0.3s ease;
+    }
+    .flipped {
+      background-color: #ff6;
+    }
+    #status {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+    .hidden {
+      visibility: hidden;
+    }
+  </style>
+</head>
+<body>
+  <h1>Jeu de Memory - Joueur <span id="playerNum"></span></h1>
+  <div id="cards"></div>
+  <div id="status">C'est au joueur 1 de jouer!</div>
+
+  <script>
+    const channel = new BroadcastChannel('memory_channel');
+
+    let myPlayer;
+    let currentPlayer = 1;
+    let isFlipping = false;
+    let flippedCards = [];
+    let matchedPairs = 0;
+    let totalPairs = 0;
+    let allCards = [];
+
+    const cardsContainer = document.getElementById('cards');
+    const statusText = document.getElementById('status');
+
+    // Prompt pour choisir le joueur
+    function askPlayerNumber() {
+      const num = prompt("Choisissez votre joueur (1 ou 2)");
+      myPlayer = parseInt(num);
+      document.getElementById('playerNum').textContent = myPlayer;
+    }
+
+    askPlayerNumber();
+
+    // Chargement et affichage des cartes
+    async function fetchCards() {
+      try {
+        const response = await fetch('/api/v1/cards'); // Remplace par ton vrai endpoint
+        const data = await response.json();
+
+        const fullDeck = [...data, ...data];
+        totalPairs = data.length;
+
+        allCards = shuffle(fullDeck);
+        displayCards(allCards);
+        startGame();
+      } catch (error) {
+        console.error('Erreur de chargement des cartes :', error);
+        cardsContainer.textContent = 'Impossible de charger les cartes.';
+      }
+    }
+
+    function shuffle(arr) {
+      return arr.sort(() => Math.random() - 0.5);
+    }
+
+    function displayCards(cards) {
+      cardsContainer.innerHTML = '';
+      cards.forEach((card, index) => {
+        const cardElement = document.createElement('div');
+        cardElement.classList.add('card', 'hidden');
+        cardElement.dataset.card = card;
+        cardElement.dataset.index = index;
+        cardElement.addEventListener('click', () => {
+          if (currentPlayer === myPlayer && !isFlipping) {
+            flipCard(cardElement, index, true);
+          }
+        });
+        cardsContainer.appendChild(cardElement);
+      });
+    }
+
+    function startGame() {
+      const cardsElements = document.querySelectorAll('.card');
+      cardsElements.forEach(card => {
+        card.classList.remove('hidden');
+        card.classList.add('flipped');
+        card.textContent = card.dataset.card;
+      });
+
+      setTimeout(() => {
+        cardsElements.forEach(card => {
+          card.classList.remove('flipped');
+          card.textContent = '';
+        });
+        updateStatus(`C'est au joueur ${currentPlayer} de jouer!`);
+      }, 5000);
+    }
+
+    function flipCard(cardElement, index, broadcast = false) {
+      if (cardElement.classList.contains('flipped')) return;
+
+      cardElement.classList.add('flipped');
+      cardElement.textContent = cardElement.dataset.card;
+      flippedCards.push({ element: cardElement, card: cardElement.dataset.card, index });
+
+      if (broadcast) {
+        channel.postMessage({ type: 'flip', index });
+      }
+
+      if (flippedCards.length === 2) {
+        isFlipping = true;
+        setTimeout(() => checkMatch(), 1000);
+      }
+    }
+
+    function checkMatch() {
+      const [first, second] = flippedCards;
+
+      if (first.card === second.card) {
+        matchedPairs++;
+        if (matchedPairs === totalPairs) {
+          updateStatus(`Le joueur ${currentPlayer} a gagné!`);
+        } else {
+          updateStatus(`Le joueur ${currentPlayer} a trouvé une paire!`);
+        }
+      } else {
+        setTimeout(() => {
+          first.element.classList.remove('flipped');
+          second.element.classList.remove('flipped');
+          first.element.textContent = '';
+          second.element.textContent = '';
+        }, 800);
+
+        currentPlayer = currentPlayer === 1 ? 2 : 1;
+        channel.postMessage({ type: 'change_turn', to: currentPlayer });
+        updateStatus(`C'est au joueur ${currentPlayer} de jouer!`);
+      }
+
+      flippedCards = [];
+      isFlipping = false;
+    }
+
+    function updateStatus(msg) {
+      statusText.textContent = msg;
+    }
+
+    // Réception des messages de l'autre fenêtre
+    channel.onmessage = (event) => {
+      const msg = event.data;
+
+      if (msg.type === 'flip') {
+        const card = document.querySelector(`.card[data-index='${msg.index}']`);
+        flipCard(card, msg.index, false);
+      }
+
+      if (msg.type === 'change_turn') {
+        currentPlayer = msg.to;
+        updateStatus(`C'est au joueur ${currentPlayer} de jouer!`);
+      }
+    };
+
+    fetchCards();
+  </script>
+</body>
+</html>
