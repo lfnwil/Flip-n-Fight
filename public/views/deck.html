@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gestion du Deck</title>
+  <link rel="stylesheet" href="../assets/deck.css" />
+</head>
+<body>
+  <header>
+    <h1>Flip 'n' Fight</h1>
+    <nav>
+      <a href="/deck" class="btn left"><svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#0d66ba" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-spade-icon lucide-spade"><path d="M5 9c-1.5 1.5-3 3.2-3 5.5A5.5 5.5 0 0 0 7.5 20c1.8 0 3-.5 4.5-2 1.5 1.5 2.7 2 4.5 2a5.5 5.5 0 0 0 5.5-5.5c0-2.3-1.5-4-3-5.5l-7-7-7 7Z"/><path d="M12 18v4"/></svg></a>
+      <div class="separation"></div>
+      <a href="/" class="btn active"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#0d66ba" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-house-icon lucide-house"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></a>
+      <div class="separation"></div>
+      <a href="/booster" class="btn right"><svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#0d66ba" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shopping-cart-icon lucide-shopping-cart"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg></a>
+    </nav>
+    <div class="user">
+      <button id="switch-user" title="Changer de compte">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right-left-icon lucide-arrow-right-left"><path d="m16 3 4 4-4 4"/><path d="M20 7H4"/><path d="m8 21-4-4 4-4"/><path d="M4 17h16"/></svg>
+      </button>
+      <h1 id="user">Chargement...</h1>
+    </div>    
+  </header>
+  <div class="container">
+    <h1>Gestion du Deck</h1>
+
+    <section class="cards-section">
+      <div class="card-list">
+        <h2>Cartes disponibles</h2>
+        <div id="available-cards" class="cards-grid"></div>
+      </div>
+
+      <div class="card-list">
+        <h2>Deck actuel (<span id="deck-count">0</span>/20)</h2>
+        <div id="deck-cards" class="cards-grid"></div>
+      </div>
+    </section>
+
+    <div class="actions">
+      <button id="submit-deck">Valider mon deck</button>
+    </div>
+  </div>
+  
+  <footer>
+    <p id="footer-text">© Flip 'n' Fight 2025 – <a href="/mentions-legales">Mentions légales</a> - <a href="/mentions-legales">Politique de confidentialité</a></p>
+  </footer>
+
+  <script>
+    const loadUser = async () => {
+      const activeUserId = localStorage.getItem('activeUserId') || '1';
+      try {
+        const res = await fetch(`/api/v1/users/${activeUserId}`);
+        if (!res.ok) throw new Error("Erreur lors de la récupération du joueur");
+        const user = await res.json();
+        document.getElementById('user').textContent = `${user.username}`;
+        document.getElementById('user-coins').textContent = `Pièces : ${user.coins}`;
+      } catch (error) {
+        console.error(error);
+        document.getElementById('welcome-message').textContent = "Erreur de chargement du joueur.";
+      }
+    };
+
+    document.getElementById('switch-user').addEventListener('click', () => {
+      const currentId = localStorage.getItem('activeUserId') || '1';
+      const nextId = currentId === '1' ? '2' : '1';
+      localStorage.setItem('activeUserId', nextId);
+      loadUser();
+    });
+
+    document.addEventListener('DOMContentLoaded', loadUser);
+    const userId = 1; 
+    const deckId = 1;
+
+    let userCards = [];
+    let deckCards = []; 
+
+    async function fetchUserCards() {
+      const res = await fetch(`/api/v1/user-cards/${userId}`);
+      userCards = await res.json();
+    }
+
+    async function fetchDeckCards() {
+      const res = await fetch(`/api/v1/deck-cards/deck/${deckId}`);
+      deckCards = await res.json();
+    }
+
+    function renderCards() {
+      const availableContainer = document.getElementById("available-cards");
+      const deckContainer = document.getElementById("deck-cards");
+      availableContainer.innerHTML = "";
+      deckContainer.innerHTML = "";
+
+      userCards.forEach((uc) => {
+        const current = deckCards.find(dc => dc.card_id === uc.card_id);
+        const quantityInDeck = current ? current.quantity : 0;
+        const availableQuantity = uc.quantity - quantityInDeck;
+
+        if (availableQuantity > 0) {
+          const cardDiv = document.createElement("div");
+          cardDiv.className = "card";
+          cardDiv.innerHTML = `
+            <p>Carte #${uc.card_id}</p>
+            <p>Dispo: ${availableQuantity}</p>
+            <button onclick="addCard(${uc.card_id})">+</button>
+          `;
+          availableContainer.appendChild(cardDiv);
+        }
+      });
+
+      deckCards.forEach((dc) => {
+        const cardDiv = document.createElement("div");
+        cardDiv.className = "card";
+        cardDiv.innerHTML = `
+          <p>Carte #${dc.card_id}</p>
+          <p>Deck: ${dc.quantity}</p>
+          <button onclick="removeCard(${dc.card_id})">-</button>
+        `;
+        deckContainer.appendChild(cardDiv);
+      });
+
+      const total = deckCards.reduce((sum, c) => sum + c.quantity, 0);
+      document.getElementById("deck-count").textContent = total;
+    }
+
+    function addCard(cardId) {
+      const total = deckCards.reduce((sum, c) => sum + c.quantity, 0);
+      if (total >= 20) return alert("Deck plein (20 cartes max)");
+
+      let card = deckCards.find(c => c.card_id === cardId);
+      if (card) {
+        if (card.quantity >= 2) return;
+        card.quantity++;
+      } else {
+        if (deckCards.length >= 10) return alert("Maximum 10 cartes différentes");
+        deckCards.push({ card_id: cardId, quantity: 1 });
+      }
+      renderCards();
+    }
+
+    function removeCard(cardId) {
+      const index = deckCards.findIndex(c => c.card_id === cardId);
+      if (index >= 0) {
+        if (deckCards[index].quantity === 1) {
+          deckCards.splice(index, 1);
+        } else {
+          deckCards[index].quantity--;
+        }
+        renderCards();
+      }
+    }
+
+    async function submitDeck() {
+      const body = {
+        deckId,
+        userId,
+        cards: deckCards.map(c => ({
+          card_id: c.card_id,
+          quantity: c.quantity
+        }))
+      };
+
+      const res = await fetch("/api/v1/deck-cards/update-deck", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body)
+      });
+
+      if (res.ok) {
+        alert("Deck mis à jour !");
+      } else {
+        const error = await res.text();
+        alert("Erreur : " + error);
+      }
+    }
+
+    document.getElementById("submit-deck").addEventListener("click", submitDeck);
+
+    async function init() {
+      await fetchUserCards();
+      await fetchDeckCards();
+      renderCards();
+    }
+
+    init();
+  </script>
+</body>
+</html>
