@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Gestion du Deck</title>
-  <link rel="stylesheet" href="../assets/deck.css" />
+  <title>Flip 'n' Fight - Deck</title>
+  <link rel="stylesheet" href="assets/index.css">
 </head>
 <body>
   <header>
@@ -23,26 +23,14 @@
       <h1 id="user">Chargement...</h1>
     </div>    
   </header>
-  <div class="container">
-    <h1>Gestion du Deck</h1>
-
-    <section class="cards-section">
-      <div class="card-list">
-        <h2>Cartes disponibles</h2>
-        <div id="available-cards" class="cards-grid"></div>
-      </div>
-
-      <div class="card-list">
-        <h2>Deck actuel (<span id="deck-count">0</span>/20)</h2>
-        <div id="deck-cards" class="cards-grid"></div>
-      </div>
-    </section>
-
-    <div class="actions">
-      <button id="submit-deck">Valider mon deck</button>
-    </div>
-  </div>
   
+  <p id="user-coins"></p>
+
+  <section>
+    <div class="card-list"></div>
+  </section>
+  
+
   <footer>
     <p id="footer-text">© Flip 'n' Fight 2025 – <a href="/mentions-legales">Mentions légales</a> - <a href="/mentions-legales">Politique de confidentialité</a></p>
   </footer>
@@ -70,120 +58,6 @@
     });
 
     document.addEventListener('DOMContentLoaded', loadUser);
-    const userId = 1; 
-    const deckId = 1;
-
-    let userCards = [];
-    let deckCards = []; 
-
-    async function fetchUserCards() {
-      const res = await fetch(`/api/v1/user-cards/${userId}`);
-      userCards = await res.json();
-    }
-
-    async function fetchDeckCards() {
-      const res = await fetch(`/api/v1/deck-cards/deck/${deckId}`);
-      deckCards = await res.json();
-    }
-
-    function renderCards() {
-      const availableContainer = document.getElementById("available-cards");
-      const deckContainer = document.getElementById("deck-cards");
-      availableContainer.innerHTML = "";
-      deckContainer.innerHTML = "";
-
-      userCards.forEach((uc) => {
-        const current = deckCards.find(dc => dc.card_id === uc.card_id);
-        const quantityInDeck = current ? current.quantity : 0;
-        const availableQuantity = uc.quantity - quantityInDeck;
-
-        if (availableQuantity > 0) {
-          const cardDiv = document.createElement("div");
-          cardDiv.className = "card";
-          cardDiv.innerHTML = `
-            <p>Carte #${uc.card_id}</p>
-            <p>Dispo: ${availableQuantity}</p>
-            <button onclick="addCard(${uc.card_id})">+</button>
-          `;
-          availableContainer.appendChild(cardDiv);
-        }
-      });
-
-      deckCards.forEach((dc) => {
-        const cardDiv = document.createElement("div");
-        cardDiv.className = "card";
-        cardDiv.innerHTML = `
-          <p>Carte #${dc.card_id}</p>
-          <p>Deck: ${dc.quantity}</p>
-          <button onclick="removeCard(${dc.card_id})">-</button>
-        `;
-        deckContainer.appendChild(cardDiv);
-      });
-
-      const total = deckCards.reduce((sum, c) => sum + c.quantity, 0);
-      document.getElementById("deck-count").textContent = total;
-    }
-
-    function addCard(cardId) {
-      const total = deckCards.reduce((sum, c) => sum + c.quantity, 0);
-      if (total >= 20) return alert("Deck plein (20 cartes max)");
-
-      let card = deckCards.find(c => c.card_id === cardId);
-      if (card) {
-        if (card.quantity >= 2) return;
-        card.quantity++;
-      } else {
-        if (deckCards.length >= 10) return alert("Maximum 10 cartes différentes");
-        deckCards.push({ card_id: cardId, quantity: 1 });
-      }
-      renderCards();
-    }
-
-    function removeCard(cardId) {
-      const index = deckCards.findIndex(c => c.card_id === cardId);
-      if (index >= 0) {
-        if (deckCards[index].quantity === 1) {
-          deckCards.splice(index, 1);
-        } else {
-          deckCards[index].quantity--;
-        }
-        renderCards();
-      }
-    }
-
-    async function submitDeck() {
-      const body = {
-        deckId,
-        userId,
-        cards: deckCards.map(c => ({
-          card_id: c.card_id,
-          quantity: c.quantity
-        }))
-      };
-
-      const res = await fetch("/api/v1/deck-cards/update-deck", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body)
-      });
-
-      if (res.ok) {
-        alert("Deck mis à jour !");
-      } else {
-        const error = await res.text();
-        alert("Erreur : " + error);
-      }
-    }
-
-    document.getElementById("submit-deck").addEventListener("click", submitDeck);
-
-    async function init() {
-      await fetchUserCards();
-      await fetchDeckCards();
-      renderCards();
-    }
-
-    init();
   </script>
 </body>
 </html>

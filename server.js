@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import path from "path";
 import sequelize from "./config/database.js";
-import { CardRouter, UserRouter, DeckRouter, DeckCardRouter, UserCardRouter, MatchRouter } from "./routers/index.router.js";
+import {CardRouter,UserRouter,DeckRouter,DeckCardRouter,UserCardRouter,MatchRouter} from "./routers/index.router.js";
 import { logMiddleware } from "./middlewares/log.middleware.js";
 import { errorHandler } from "./middlewares/error.middleware.js";
 import { initializeGameMock } from "./services/mock.service.js";
@@ -12,6 +12,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(logMiddleware);
+
 app.use(express.static(path.join(path.resolve(), "public")));
 
 app.use("/api/v1/cards", CardRouter);
@@ -23,6 +24,10 @@ app.use("/api/v1/matches", MatchRouter);
 
 app.get("/", (req, res) => {
   res.send("Bienvenue dans Flip 'n' Fight ! Utilisez les routes /api/v1/... pour accéder à l'API.");
+});
+
+app.get("/deck", (req, res) => {
+  res.sendFile(path.join(path.resolve(), "public", "views", "deck.html"));
 });
 
 app.use(errorHandler);
