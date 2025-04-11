@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Flip 'n' Fight - Deck</title>
-  <link rel="stylesheet" href="assets/index.css">
+  <link rel="stylesheet" href="assets/deck.css">
 </head>
 <body>
   <header>
@@ -28,6 +28,7 @@
 
   <section>
     <div class="card-list"></div>
+    <div class="deck"></div>
   </section>
   
 
@@ -55,9 +56,69 @@
       const nextId = currentId === '1' ? '2' : '1';
       localStorage.setItem('activeUserId', nextId);
       loadUser();
+      loadCards();
     });
 
-    document.addEventListener('DOMContentLoaded', loadUser);
+    const rarityOrder = {
+    legendary: 1,
+    epic: 2,
+    rare: 3,
+    common: 4
+  };
+
+  const loadCards = async () => {
+  try {
+    const activeUserId = localStorage.getItem('activeUserId') || '1';
+
+    const [cardsRes, userCardsRes] = await Promise.all([
+      fetch("/api/v1/cards"),
+      fetch(`/api/v1/user-cards/user/${activeUserId}`)
+    ]);
+
+    if (!cardsRes.ok || !userCardsRes.ok) throw new Error("Erreur lors du chargement des données");
+
+    const cards = await cardsRes.json();
+    const userCards = await userCardsRes.json();
+    const userCardIds = userCards.map(uc => uc.card_id);
+
+    cards.sort((a, b) => {
+      const aOwned = userCardIds.includes(a.id);
+      const bOwned = userCardIds.includes(b.id);
+
+      if (aOwned && !bOwned) return -1;
+      if (!aOwned && bOwned) return 1;
+
+      return rarityOrder[a.rarity] - rarityOrder[b.rarity];
+    });
+
+    const cardListDiv = document.querySelector('.card-list');
+    cardListDiv.innerHTML = '';
+
+    cards.forEach(card => {
+      const owned = userCardIds.includes(card.id);
+      const cardElement = document.createElement('div');
+      cardElement.classList.add('card');
+      cardElement.style.borderColor = card.color;
+
+      if (!owned) cardElement.classList.add('grayscale');
+
+      cardElement.innerHTML = `
+        <img src="${card.image || '/assets/default-card.png'}" alt="${card.name}" />
+      `;
+      cardListDiv.appendChild(cardElement);
+    });
+
+  } catch (error) {
+    console.error(error);
+    document.querySelector('.card-list').textContent = "Impossible de charger les cartes.";
+  }
+};
+
+
+  document.addEventListener('DOMContentLoaded', () => {
+    loadUser();
+    loadCards();
+  });
   </script>
 </body>
 </html>
