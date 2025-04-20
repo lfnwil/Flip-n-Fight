@@ -7,29 +7,29 @@
   <link rel="stylesheet" href="assets/index.css">
 </head>
 <body>
-  <header>
-    <h1>Flip 'n' Fight</h1>
-    <nav>
-      <a href="/deck" class="btn left"><svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#0d66ba" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-spade-icon lucide-spade"><path d="M5 9c-1.5 1.5-3 3.2-3 5.5A5.5 5.5 0 0 0 7.5 20c1.8 0 3-.5 4.5-2 1.5 1.5 2.7 2 4.5 2a5.5 5.5 0 0 0 5.5-5.5c0-2.3-1.5-4-3-5.5l-7-7-7 7Z"/><path d="M12 18v4"/></svg></a>
-      <div class="separation"></div>
-      <a href="/" class="btn active"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#0d66ba" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-house-icon lucide-house"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></a>
-      <div class="separation"></div>
-      <a href="/booster" class="btn right"><svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#0d66ba" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shopping-cart-icon lucide-shopping-cart"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg></a>
-    </nav>
-    <div class="user">
-      <button id="switch-user" title="Changer de compte">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right-left-icon lucide-arrow-right-left"><path d="m16 3 4 4-4 4"/><path d="M20 7H4"/><path d="m8 21-4-4 4-4"/><path d="M4 17h16"/></svg>
-      </button>
-      <h1 id="user">Chargement...</h1>
-    </div>    
-  </header>
-  
+<header>
+  <h1>Flip 'n' Fight</h1>
+  <nav>
+    <a href="/deck" class="btn left"><svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#0d66ba" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-spade-icon lucide-spade"><path d="M5 9c-1.5 1.5-3 3.2-3 5.5A5.5 5.5 0 0 0 7.5 20c1.8 0 3-.5 4.5-2 1.5 1.5 2.7 2 4.5 2a5.5 5.5 0 0 0 5.5-5.5c0-2.3-1.5-4-3-5.5l-7-7-7 7Z"/><path d="M12 18v4"/></svg></a>
+    <div class="separation"></div>
+    <a href="/" class="btn active"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#0d66ba" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-house-icon lucide-house"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></a>
+    <div class="separation"></div>
+    <a href="/booster" class="btn right"><svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#0d66ba" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shopping-cart-icon lucide-shopping-cart"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg></a>
+  </nav>
+  <div class="user">
+    <button id="switch-user" title="Changer de compte">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right-left-icon lucide-arrow-right-left"><path d="m16 3 4 4-4 4"/><path d="M20 7H4"/><path d="m8 21-4-4 4-4"/><path d="M4 17h16"/></svg>
+    </button>
+    <h1 id="user">Chargement...</h1>
+  </div>
+</header>
+
   <p id="user-coins"></p>
 
-  <section>
-    <div class="card-list"></div>
-  </section>
-  
+<section>
+  <div class="card-list"></div>
+</section>
+
 
   <footer>
     <p id="footer-text">© Flip 'n' Fight 2025 – <a href="/mentions-legales">Mentions légales</a> - <a href="/mentions-legales">Politique de confidentialité</a></p>
@@ -39,7 +39,7 @@
     const loadUser = async () => {
       const activeUserId = localStorage.getItem('activeUserId') || '1';
       try {
-        const res = await fetch(`/api/v1/users/${activeUserId}`);
+        const res = await fetch(`/api/v1/user-cards`);
         if (!res.ok) throw new Error("Erreur lors de la récupération du joueur");
         const user = await res.json();
         document.getElementById('user').textContent = `${user.username}`;

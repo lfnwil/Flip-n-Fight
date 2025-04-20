@@ -8,23 +8,20 @@ import { errorHandler } from "./middlewares/error.middleware.js";
 import { initializeGameMock } from "./services/mock.service.js";
 
 const app = express();
-
+import cardsRouter from './routes/cards.js'; // N'oublie pas le `.js
 app.use(cors());
 app.use(express.json());
 app.use(logMiddleware);
 
 app.use(express.static(path.join(path.resolve(), "public")));
 
-app.use("/api/v1/heroes", heroRouter);
-app.use("/api/v1/missions", missionRouter);
+app.use("/api/v1/cards", CardRouter);
+app.use("/api/v1/users", UserRouter);
+app.use("/api/v1/decks", DeckRouter);
+app.use("/api/v1/deck-cards", DeckCardRouter);
+app.use("/api/v1/user-cards", UserCardRouter);
+app.use("/api/v1/matches", MatchRouter);
 
-app.get('/missions', (req, res) => {
-  res.sendFile(path.join(path.resolve(), 'public', 'missions.html'));
-});
-
-app.get('/heroes', (req, res) => {
-  res.sendFile(path.join(path.resolve(), 'public', 'heroes.html'));
-});
 
 app.get("/", (req, res) => {
   res.send("Bienvenue dans Flip 'n' Fight ! Utilisez les routes /api/v1/... pour accéder à l'API.");

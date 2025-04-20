@@ -1,7 +1,7 @@
-import User from "../models/User.model.js";
-import Deck from "../models/Deck.model.js";
-import UserCard from "../models/UserCard.model.js";
-import Card from "../models/Card.model.js";
+import User from "./models/User.model.js";
+import Deck from "./models/Deck.model.js";
+import UserCard from "./models/UserCard.model.js";
+import Card from "./models/Card.model.js";
 
 // Créer un utilisateur
 export async function createUser({ username, email, password, coins = 0 }) {
